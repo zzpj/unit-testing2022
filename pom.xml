@@ -78,9 +78,7 @@
                         <include>**/*TestCase.java</include>
                     </includes>
                     <properties>
-                        <!--<excludeTags>Priority1</excludeTags>-->
-
-                        <includeTags>customTag</includeTags>
+                        <excludeTags>TASK-1</excludeTags>
                     </properties>
                 </configuration>
             </plugin>

@@ -43,7 +43,7 @@ Structures that support testing | Anti-patterns for unit tests |
  using interfaces | 
 
 ## JUnit Syntax Example
-````
+````java
 @Test
 public void shouldAddTwoNumbers() {
   //given
@@ -56,7 +56,7 @@ public void shouldAddTwoNumbers() {
 ````
 
 ## JUnit Initialization and Cleaning
-````
+````java
 class StandardTests {
 
     @BeforeAll
@@ -98,8 +98,7 @@ class StandardTests {
 }
 ````
 
-## JUnit API
-### Assertions
+## JUnit Assertions
 * `assertEquals`
 * `assertTrue`
 * `assertFalse`
@@ -108,21 +107,6 @@ class StandardTests {
 * `assertThrow`
 * `assertAll`
 * `assertTimeout`
-### Assumptions
-* `assumeTrue`
-* `assumeFalse`
-* `assumingThat`
-### Parametrization
-* `@ParametrizedTest`
-    * `@ValueSource`
-    * `@CsvSource`
-    * `@CsvFileSource`
-    * `@MethodSource`
-### On/Off
-* `@Disabled`
-* `@EnabledOnJre`
-* `@EnabledOnOs`
-
 
 ## JUnit - drawbacks
 * poor implementation – just basic verification
@@ -147,4 +131,5 @@ Reference - read more: https://junit.org/junit5/docs/current/user-guide/#overvie
 
 ## Samples
 
-## Zadania
+## Zadania do wykonania
+
