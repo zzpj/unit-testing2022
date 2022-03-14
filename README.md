@@ -1,7 +1,7 @@
 # Unit Testing 2022
 
 ## Test Driven Development
-![image alt >](img_1.png)
+![tdd](img_1.png)
 * Testing is cool 
 * Testing makes Your life easier
 * Testing makes You work faster
@@ -31,7 +31,7 @@
 * prepare in good time
 * prepare just before start coding given feature (method)
 
-![img.png](img.png)
+![joke](img.png)
 
 ## What supports (or not) unit testing
 Structures that support testing | Anti-patterns for unit tests |
@@ -141,6 +141,10 @@ class StandardTests {
 * JUnit Vintage
   * TestEngines for running JUnit 3 and 4
 
-![img_2.png](img_2.png)
+![junit5](img_2.png)
 
 Reference - read more: https://junit.org/junit5/docs/current/user-guide/#overview
+
+## Samples
+
+## Zadania
