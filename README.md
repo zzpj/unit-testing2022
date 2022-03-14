@@ -42,23 +42,76 @@ Structures that support testing | Anti-patterns for unit tests |
  dependency injections |
  using interfaces | 
 
-## JUnit
+## JUnit Syntax Example
+````
+@Test
+public void shouldAddTwoNumbers() {
+  //given
+  Calculator sut = new Calculator();
+  //when
+  int actual = sut.add(1, 2);
+  //then
+  assertEquals(3, actual);
+}
+````
 
+## JUnit Initialization and Cleaning
+````
+class StandardTests {
+
+    @BeforeAll
+    static void initAll() {
+    }
+
+    @BeforeEach
+    void init() {
+    }
+
+    @Test
+    void succeedingTest() {
+    }
+
+    @Test
+    void failingTest() {
+        fail("a failing test");
+    }
+
+    @Test
+    @Disabled("for demonstration purposes")
+    void skippedTest() {
+        // not executed
+    }
+
+    @Test
+    void abortedTest() {
+        assumeTrue("abc".contains("Z"));
+        fail("test should have been aborted");
+    }
+
+    @AfterEach
+    void tearDown() {
+    }
+
+    @AfterAll
+    static void tearDownAll() {
+    }
+}
+````
 
 ## JUnit API
-### Basic
-* `@BeforeEach`
-* `@AfterEach`
-* `@BeforeAll`
-* `@AfterAll`
-* `@Test`
-* `@assertThrow`
-* `@assertAll`
-* `@assertTimeout` 
+### Assertions
+* `assertEquals`
+* `assertTrue`
+* `assertFalse`
+* `assertNull`
+* `assertNotNull`
+* `assertThrow`
+* `assertAll`
+* `assertTimeout`
 ### Assumptions
-* `assumeTrue()`
-* `assumeFalse()`
-* `assumingThat()`
+* `assumeTrue`
+* `assumeFalse`
+* `assumingThat`
 ### Parametrization
 * `@ParametrizedTest`
     * `@ValueSource`
@@ -89,3 +142,5 @@ Structures that support testing | Anti-patterns for unit tests |
   * TestEngines for running JUnit 3 and 4
 
 ![img_2.png](img_2.png)
+
+Reference - read more: https://junit.org/junit5/docs/current/user-guide/#overview
