@@ -127,9 +127,7 @@ class StandardTests {
 
 ![junit5](img_2.png)
 
-Reference - read more: https://junit.org/junit5/docs/current/user-guide/#overview
-
-## Samples
-
-## Zadania do wykonania
-
+## Links
+* Read more: https://junit.org/junit5/docs/current/user-guide/#overview
+* [Snippety z prezentacji](Samples.md)
+* [Zadania do wykonania](Zadania.md)
