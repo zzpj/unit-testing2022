@@ -77,9 +77,7 @@
                         <include>**/*Tests.java</include>
                         <include>**/*TestCase.java</include>
                     </includes>
-                    <properties>
-                        <excludeTags>TASK-1</excludeTags>
-                    </properties>
+                    <!-- <excludedGroups>FEATURE-1</excludedGroups>-->
                 </configuration>
             </plugin>
         </plugins>

@@ -166,7 +166,54 @@ boolean customCondition() {
 ```
 
 ## Tagging
-TODO
+```java
+class CalculatorTest {
+    
+    Calculator sut;
+
+    @BeforeEach
+    public void setUp() {
+        sut = new Calculator();
+    }
+
+    @Test
+    @Tag("FEATURE-1")
+    public void shouldDivideNumbers() throws NotDividedByZeroException {
+        assertEquals(5, sut.divide(25, 5));
+    }
+
+    @Test
+    @Tag("FEATURE-2")
+    public void shouldSubtract() {
+        assertEquals(3, sut.subtract(10, 7));
+    }
+
+    @Test
+    public void shouldCheckPrime() {
+        assertTrue(sut.isPrime(17));
+    }
+}
+```
+
+### IntelliJ config
+![intellij-config](img_3.png)
+
+### Maven config
+```xml
+<plugin>
+  <artifactId>maven-surefire-plugin</artifactId>
+  <version>${maven.surefire.plugin.version}</version>
+  <configuration>
+      <includes>
+          <include>**/Test*.java</include>
+          <include>**/*Test.java</include>
+          <include>**/*Tests.java</include>
+          <include>**/*TestCase.java</include>
+      </includes>
+      <excludedGroups>FEATURE-1</excludedGroups>
+  </configuration>
+</plugin>
+```
 
 ## Parametrized Tests
 ```java
@@ -211,6 +258,112 @@ public class CalculatorParametrizedTest {
     }
 }
 ```
+## Nesting
+```java
+class StackExerciseTest {
+
+    StackExercise stack;
+
+    @Test
+    @DisplayName("is instantiated with new Stack")
+    void isInstantiatedWithNew() {
+        stack = new StackExercise();
+    }
+
+    @Nested
+    @DisplayName("when new")
+    class WhenNew {
+
+        @BeforeEach
+        void createNewStack() {
+            stack = new StackExercise();
+        }
+
+        @Test
+        @DisplayName("is empty")
+        void isEmpty() {
+            assertTrue(stack.isEmpty());
+        }
+
+        @Test
+        @DisplayName("throws EmptyStackException when popped")
+        void throwsExceptionWhenPopped() {
+            assertThrows(StackEmptyException.class, stack::pop);
+        }
+
+        @Nested
+        @DisplayName("after pushing an element")
+        class AfterPushing {
+
+            String anElement = "an element";
+
+            @BeforeEach
+            void pushAnElement() {
+                stack.push(anElement);
+            }
+
+            @Test
+            @DisplayName("it is no longer empty")
+            void isNotEmpty() {
+                assertFalse(stack.isEmpty());
+            }
+
+            @Test
+            @DisplayName("returns the element when popped and is empty")
+            void returnElementWhenPopped() throws StackEmptyException {
+                assertEquals(anElement, stack.pop());
+                assertTrue(stack.isEmpty());
+            }
+        }
+    }
+}
+```
+
+##  Test Execution Order
+* Method Order
+* Class Order
+
+### Method Order
+```java
+//@TestMethodOrder(MethodOrderer.DisplayName.class)
+@TestMethodOrder(MethodOrderer.OrderAnnotation.class)
+class CalculatorTest {
+
+    Calculator sut;
+
+    @BeforeEach
+    public void setUp() {
+        sut = new Calculator();
+    }
+
+    @Test
+    @Order(100)
+    public void shouldDivideNumbers() throws NotDividedByZeroException {
+        assertEquals(5, sut.divide(25, 5));
+    }
+
+    @Test
+    @Order(300)
+    public void shouldSubtract() {
+        assertEquals(3, sut.subtract(10, 7));
+    }
+
+    @Test
+    @Order(200)
+    public void shouldCheckPrime() {
+        assertTrue(sut.isPrime(17));
+    }
+}
+```
+
+## Repeated
+```java
+@RepeatedTest(10)
+//@RepeatedTest(value = 5, name = "{displayName} {currentRepetition}/{totalRepetitions}")
+public void shouldSubtract() {
+    assertEquals(3, sut.subtract(10, 7));
+}
+```
 
 ## Running legacy tests 
 ```xml
@@ -232,6 +385,3 @@ public class CalculatorParametrizedTest {
 ```bash
 mvn clean verify surefire-report:report
 ```
-
-## Github Actions
-TODO
