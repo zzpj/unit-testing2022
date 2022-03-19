@@ -58,7 +58,9 @@ public class DataService {
 
     public TolkienCharacter getFellowshipCharacter(String name) {
         List<TolkienCharacter> list = getFellowship();
-        return list.stream().filter(s-> s.equals(name)).findFirst().get();
+        //  git blame!
+        //  list.stream().filter(s-> s.equals(name)).findFirst().get()
+        return list.stream().filter(character-> character.getName().equals(name)).findFirst().orElseThrow();
     }
 
     public boolean update() {
