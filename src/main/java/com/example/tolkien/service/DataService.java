@@ -60,7 +60,7 @@ public class DataService {
         List<TolkienCharacter> list = getFellowship();
         //  git blame!
         //  list.stream().filter(s-> s.equals(name)).findFirst().get()
-        return list.stream().filter(s-> s.getName().equals(name)).findFirst().get();
+        return list.stream().filter(character-> character.getName().equals(name)).findFirst().orElseThrow();
     }
 
     public boolean update() {

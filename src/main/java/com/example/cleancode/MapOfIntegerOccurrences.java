@@ -5,11 +5,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
+import static java.lang.Integer.*;
+
 public class MapOfIntegerOccurrences {
 
-	Map<Integer, Integer> integerValueOccurrenceMap = new HashMap<>();
-	private int highestEncounteredValue = Integer.MIN_VALUE;
-	private int lowestEncounteredValue = Integer.MAX_VALUE;
+	private final Map<Integer, Integer> integerValueOccurrenceMap = new HashMap<>();
+	private int highestEncounteredIntegerValue = MIN_VALUE;
+	private int lowestEncounteredIntegerValue = MAX_VALUE;
 	
 	public MapOfIntegerOccurrences(List<Integer> listOfIntegers) {
 		parseListOfIntegers(listOfIntegers);
@@ -33,12 +35,12 @@ public class MapOfIntegerOccurrences {
 			integerValueOccurrenceMap.put(integerValue, 1);
 		}
 
-		if (integerValue > highestEncounteredValue) {
-			highestEncounteredValue = integerValue;
+		if (integerValue > highestEncounteredIntegerValue) {
+			highestEncounteredIntegerValue = integerValue;
 		}
 		
-		if (integerValue < lowestEncounteredValue) {
-			lowestEncounteredValue = integerValue;
+		if (integerValue < lowestEncounteredIntegerValue) {
+			lowestEncounteredIntegerValue = integerValue;
 		}
 	}
 
@@ -58,12 +60,12 @@ public class MapOfIntegerOccurrences {
 		return keysMultipliedByCorrespondingValuesAccumulator / valuesAccumulator;
 	}
 	
-	public int getHighestEncounteredValue() {
-		return highestEncounteredValue;
+	public int getHighestEncounteredIntegerValue() {
+		return highestEncounteredIntegerValue;
 	}
 	
-	public int getLowestEncounteredValue() {
-		return lowestEncounteredValue;
+	public int getLowestEncounteredIntegerValue() {
+		return lowestEncounteredIntegerValue;
 	}
 
 }

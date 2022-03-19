@@ -28,11 +28,11 @@ class DataServiceTest {
 
         assertAll(
                 // TODO check that age is 33
-                () -> assertEquals(frodo.getAge(), 33),
+                () -> assertEquals(33, frodo.getAge()),
             // TODO check that name is "Frodo"
-                () -> assertEquals(frodo.getName(), "Frodo"),
+                () -> assertEquals("Frodo", frodo.getName()),
             // TODO check that name is not "Frodon"
-                () -> assertNotEquals(frodo.getName(), "Frodon")
+                () -> assertNotEquals("Frodon", frodo.getName())
         );
     }
 
@@ -44,9 +44,9 @@ class DataServiceTest {
         // TODO check that:
         assertAll(
                 // jake is equal to sameJake
-                () -> assertEquals(jake, sameJake),
+                () -> assertEquals(sameJake, jake),
                 // jake is not equal to jakeClone
-                () -> assertNotEquals(jake, jakeClone)
+                () -> assertNotEquals(jakeClone, jake)
         );
     }
 
@@ -54,7 +54,7 @@ class DataServiceTest {
     void checkInheritance() throws ClassNotFoundException {
         TolkienCharacter tolkienCharacter = dataService.getFellowship().get(0);
         // TODO check that tolkienCharacter.getClass is not a movie class
-        assertNotEquals(tolkienCharacter.getClass(), Class.forName("com.example.tolkien.model.Movie"));
+        assertNotEquals(Class.forName("com.example.tolkien.model.Movie"), tolkienCharacter.getClass());
     }
 
     @Test
@@ -97,10 +97,20 @@ class DataServiceTest {
     @Test
     void ensureOrdering() {
         List<TolkienCharacter> fellowship = dataService.getFellowship();
-
         // ensure that the order of the fellowship is:
         // frodo, sam, merry,pippin, gandalf,legolas,gimli,aragorn,boromir
-
+        List<TolkienCharacter> correctOrder = List.of(
+                dataService.frodo,
+                dataService.sam,
+                dataService.merry,
+                dataService.pippin,
+                dataService.gandalf,
+                dataService.legolas,
+                dataService.gimli,
+                dataService.aragorn,
+                dataService.boromir
+        );
+        assertEquals(correctOrder, fellowship);
     }
 
     @Test
@@ -157,7 +167,7 @@ class DataServiceTest {
         // use assertThrows() rule to check that an IllegalArgumentException exception is thrown and
         // that the message is:
         // "Age is not allowed to be smaller than zero"
-        // TO NIE RZUCA WYJATKU!!!!!!!
+        // there is no constraint on age field. Sth like javax @min() would be sufficient
         Throwable exception = assertThrows(IllegalArgumentException.class,
                 () -> new TolkienCharacter("Frodo", -1, HOBBIT));
         assertEquals("Age is not allowed to be smaller than zero", exception.getMessage());

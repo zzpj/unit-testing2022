@@ -12,10 +12,10 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 @DisplayName("MapOfIntegerOccurrences class test")
 public class MapOfIntegerOccurrencesTest {
 
-    MapOfIntegerOccurrences emptyMap;
-    MapOfIntegerOccurrences mapWithValues;
-    List<Integer> integerList;
-    static long startTime;
+    private MapOfIntegerOccurrences emptyMap;
+    private MapOfIntegerOccurrences mapWithValues;
+    private List<Integer> integerList;
+    private static long startTime;
 
     @BeforeAll
     public static void initAll() {
@@ -36,8 +36,8 @@ public class MapOfIntegerOccurrencesTest {
     @DisplayName("Default lowest and highest values check")
     public void ensureGettersOfEncounteredValue_ReturnCorrectValues_WithDefaultConstructor() {
         assertAll(
-                () -> assertEquals(emptyMap.getHighestEncounteredValue(), Integer.MIN_VALUE),
-                () -> assertEquals(emptyMap.getLowestEncounteredValue(), Integer.MAX_VALUE)
+                () -> assertEquals(emptyMap.getHighestEncounteredIntegerValue(), Integer.MIN_VALUE),
+                () -> assertEquals(emptyMap.getLowestEncounteredIntegerValue(), Integer.MAX_VALUE)
         );
     }
 
@@ -45,8 +45,8 @@ public class MapOfIntegerOccurrencesTest {
     @DisplayName("Class constructor check")
     public void ensureGettersOfEncounteredValue_ReturnCorrectValues_WithParametrizedConstructor() {
         assertAll(
-                () -> assertEquals(mapWithValues.getHighestEncounteredValue(), Collections.max(integerList)),
-                () -> assertEquals(mapWithValues.getLowestEncounteredValue(), Collections.min(integerList))
+                () -> assertEquals(mapWithValues.getHighestEncounteredIntegerValue(), Collections.max(integerList)),
+                () -> assertEquals(mapWithValues.getLowestEncounteredIntegerValue(), Collections.min(integerList))
         );
     }
 
