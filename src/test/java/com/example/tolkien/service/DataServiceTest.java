@@ -1,10 +1,8 @@
 package com.example.tolkien.service;
 
+import com.example.tolkien.model.Movie;
 import com.example.tolkien.model.TolkienCharacter;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.util.List;
 
@@ -12,64 +10,63 @@ import static com.example.tolkien.model.Race.HOBBIT;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DataServiceTest {
-    // TODO initialize before each test
     DataService dataService;
 
-    @Test
-    @Disabled
-    void ensureThatInitializationOfTolkeinCharactorsWorks() {
-        TolkienCharacter frodo = new TolkienCharacter("Frodo", 33, HOBBIT);
-
-        // TODO check that age is 33
-        // TODO check that name is "Frodo"
-        // TODO check that name is not "Frodon"
+    @BeforeEach
+    public void setUp() {
+        dataService = new DataService();
     }
 
     @Test
-    @Disabled
+    void ensureThatInitializationOfTolkeinCharactorsWorks() {
+        //given
+        TolkienCharacter frodo = new TolkienCharacter("Frodo", 33, HOBBIT);
+        //when
+        int age = frodo.getAge();
+        String name = frodo.getName();
+        //then
+        assertEquals(33, age);
+        assertEquals("Frodo", name);
+        assertNotEquals("Frodon", name);
+    }
+
+    @Test
     void ensureThatEqualsWorksForCharaters() {
+        //given
         Object jake = new TolkienCharacter("Jake", 43, HOBBIT);
         Object sameJake = jake;
         Object jakeClone = new TolkienCharacter("Jake", 12, HOBBIT);
-        // TODO check that:
-        // jake is equal to sameJake
-        // jake is not equal to jakeClone
+        //then
+        assertEquals(jake, sameJake);
+        assertNotEquals(jake, jakeClone);
     }
 
     @Test
-    @Disabled
     void checkInheritance() {
         TolkienCharacter tolkienCharacter = dataService.getFellowship().get(0);
-        // TODO check that tolkienCharacter.getClass is not a movie class
+        assertNotEquals(tolkienCharacter.getClass(), Movie.class);
     }
 
     @Test
-    @Disabled
     void ensureFellowShipCharacterAccessByNameReturnsNullForUnknownCharacter() {
-        // TODO imlement a check that dataService.getFellowshipCharacter returns null for an
-        // unknow felllow, e.g. "Lars"
+        assertNull(dataService.getFellowshipCharacter("Lars"));
     }
 
     @Test
-    @Disabled
     void ensureFellowShipCharacterAccessByNameWorksGivenCorrectNameIsGiven() {
-        // TODO imlement a check that dataService.getFellowshipCharacter returns a fellow for an
-        // existing felllow, e.g. "Frodo"
+        assertEquals("Frodo", dataService.getFellowshipCharacter("Frodo").getName());
     }
 
 
     @Test
-    @Disabled
     void ensureThatFrodoAndGandalfArePartOfTheFellowsip() {
-
         List<TolkienCharacter> fellowship = dataService.getFellowship();
+        assertTrue(fellowship.stream().anyMatch(c -> c.getName().equals("Frodo")));
+        assertTrue(fellowship.stream().anyMatch(c -> c.getName().equals("Gandalf")));
 
-        // TODO check that Frodo and Gandalf are part of the fellowship
     }
 
-    // TODO Use @RepeatedTest(int) to execute this test 1000 times
-    @Test
-    @Disabled
+    @RepeatedTest(100)
     @Tag("slow")
     @DisplayName("Minimal stress testing: run this test 1000 times to ")
     void ensureThatWeCanRetrieveFellowshipMultipleTimes() {
@@ -78,12 +75,12 @@ class DataServiceTest {
     }
 
     @Test
-    @Disabled
     void ensureOrdering() {
         List<TolkienCharacter> fellowship = dataService.getFellowship();
-
-        // ensure that the order of the fellowship is:
-        // frodo, sam, merry,pippin, gandalf,legolas,gimli,aragorn,boromir
+        String[] names = {"Frodo", "Sam", "Merry", "Pippin", "Gandalf", "Legolas", "Gimli", "Aragorn", "Boromir"};
+        for (int i = 0; i < fellowship.size(); i++) {
+            assertEquals(fellowship.get(i).getName(), names[i]);
+        }
     }
 
     @Test
