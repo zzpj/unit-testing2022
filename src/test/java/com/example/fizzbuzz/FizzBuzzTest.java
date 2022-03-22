@@ -12,8 +12,9 @@ import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
 import org.junit.jupiter.params.provider.CsvSource;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+
 
 public class FizzBuzzTest {
     FizzBuzzProblem sut;
@@ -32,7 +33,7 @@ public class FizzBuzzTest {
 
 
     @ParameterizedTest
-    @CsvSource({"3", "6", "9"})
+    @CsvSource({"3", "6", "9","-12"})
     public void shouldReturnFizz(int a){
         assertEquals("Fizz", sut.getFizzBuzzNumber(a));
     }
@@ -43,8 +44,9 @@ public class FizzBuzzTest {
         assertEquals("Buzz", sut.getFizzBuzzNumber(a));
     }
 
-    @Test
+    @ParameterizedTest
     @EnabledOnOs(OS.WINDOWS)
+    @CsvSource({"-30","0","15"})
     public void shouldReturnFizzBuzz() {
         assertEquals("FizzBuzz", sut.getFizzBuzzNumber(15));
     }
