@@ -10,12 +10,12 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AverageTest {
 
     Average average;
-    Average average2;
+    Average averageParameters;
 
     @BeforeEach
     public void setUp() {
         average = new Average();
-        average2 = new Average(Arrays.asList(11, 2, 15, 1, 1));
+        averageParameters = new Average(Arrays.asList(11, 2, 15, 1, 1));
     }
 
     @Test
@@ -26,8 +26,21 @@ public class AverageTest {
 
     @Test
     public void averageSetUpWithParametersTest() {
-        assertEquals(average2.getBottomLimit(), 1);
-        assertEquals(average2.getTopLimit(), 15);
+        assertEquals(averageParameters.getBottomLimit(), 1);
+        assertEquals(averageParameters.getTopLimit(), 15);
+    }
+
+    @Test
+    public void checkingMapValueTest() {
+        assertEquals(averageParameters.getValueOfIndex(1), 2);
+        assertEquals(averageParameters.getValueOfIndex(0), 0);
+        assertEquals(average.getValueOfIndex(0), 0);
+    }
+
+
+    @Test
+    public void weightedAverageTest() {
+        assertEquals(averageParameters.weightedAverage(), 6);
     }
 
 }

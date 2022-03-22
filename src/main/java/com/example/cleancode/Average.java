@@ -45,15 +45,15 @@ public class Average {
     }
 
     public int getValueOfIndex (int i) {
-        return map.getOrDefault(i, null);
+        return map.getOrDefault(i, 0);
     }
 
     public double weightedAverage() {
         double sum = 0;
         double amount = 0;
-        for (Entry<Integer, Integer> u : map.entrySet()) {
-            amount += u.getValue();
-            sum += u.getKey() * u.getValue();
+        for (Entry<Integer, Integer> pair : map.entrySet()) {
+            amount += pair.getValue();
+            sum += pair.getKey() * pair.getValue();
         }
         return sum / amount;
     }
