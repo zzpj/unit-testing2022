@@ -4,11 +4,16 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
-@AllArgsConstructor
 public class TolkienCharacter {
     private String name;
     public int age;
     private Race race;
+
+    public TolkienCharacter(String name, int age, Race race) {
+        this.name = name;
+        setAge(age);
+        this.race = race;
+    }
 
     public void setAge(int age) {
         if (age < 0) {
