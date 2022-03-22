@@ -34,7 +34,6 @@ public class DataService {
     final Movie theReturnOfTheKing = new Movie("the Return of the King", Year.of(2003), Duration.ofMinutes(201));
 
     public List<TolkienCharacter> getFellowship() {
-
         final List<TolkienCharacter> fellowshipOfTheRing = new ArrayList<>();
         fellowshipOfTheRing.add(frodo);
         fellowshipOfTheRing.add(sam);

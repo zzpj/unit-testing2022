@@ -2,11 +2,17 @@ package com.example.tolkien.service;
 
 import com.example.tolkien.model.Movie;
 import com.example.tolkien.model.TolkienCharacter;
+import org.junit.Assert;
 import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledOnJre;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.JRE;
+import org.junit.jupiter.api.condition.OS;
 
+import java.time.Duration;
 import java.util.List;
 
-import static com.example.tolkien.model.Race.HOBBIT;
+import static com.example.tolkien.model.Race.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DataServiceTest {
@@ -66,7 +72,7 @@ class DataServiceTest {
 
     }
 
-    @RepeatedTest(100)
+    @RepeatedTest(1000)
     @Tag("slow")
     @DisplayName("Minimal stress testing: run this test 1000 times to ")
     void ensureThatWeCanRetrieveFellowshipMultipleTimes() {
@@ -84,30 +90,29 @@ class DataServiceTest {
     }
 
     @Test
-    @Disabled
     void ensureAge() {
         List<TolkienCharacter> fellowship = dataService.getFellowship();
 
-        // TODO test ensure that all hobbits and men are younger than 100 years
+        fellowship.stream().filter(character -> character.getRace().equals(HOBBIT))
+                .forEach(character -> assertTrue(character.getAge() < 100));
 
-        // TODO also ensure that the elfs, dwars the maia are all older than 100 years
+        fellowship.stream().filter(character -> character.getRace().equals(MAN))
+                .forEach(character -> assertTrue(character.getAge() < 100));
 
+        fellowship.stream().filter(character -> character.getRace().equals(ELF))
+                .forEach(character -> assertTrue(character.getAge() > 100));
 
-        // HINT fellowship.stream might be useful here
+        fellowship.stream().filter(character -> character.getRace().equals(DWARF))
+                .forEach(character -> assertTrue(character.getAge() > 100));
     }
 
     @Test
-    @Disabled
     void ensureThatFellowsStayASmallGroup() {
-
         List<TolkienCharacter> fellowship = dataService.getFellowship();
-
-        // TODO Write a test to get the 20 element from the fellowship throws an
-        // IndexOutOfBoundsException
+        assertThrows(IndexOutOfBoundsException.class, () -> fellowship.get(20));
     }
 
     @Test
-    @Disabled
     void exceptionTesting() {
         DataService dataService = new DataService();
         Throwable exception = assertThrows(IndexOutOfBoundsException.class, () -> dataService.getFellowship().get(20));
@@ -115,33 +120,31 @@ class DataServiceTest {
     }
 
     @Test
-    @Disabled
     public void ensureThatAgeMustBeLargerThanZeroViaSetter() {
         TolkienCharacter frodo = new TolkienCharacter("Frodo", 33, HOBBIT);
-        // use assertThrows() rule to check that the message is:
-        // Age is not allowed to be smaller than zero
-        frodo.setAge(-1);
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> frodo.setAge(-1));
+        assertEquals("Age is not allowed to be smaller than zero", exception.getMessage());
 
     }
 
     @Test
-    @Disabled
     public void testThatAgeMustBeLargerThanZeroViaConstructor() {
-        // use assertThrows() rule to check that an IllegalArgumentException exception is thrown and
-        // that the message is:
-        // "Age is not allowed to be smaller than zero"
-
-        TolkienCharacter frodo = new TolkienCharacter("Frodo", -1, HOBBIT);
+        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
+            TolkienCharacter frodo = new TolkienCharacter("Frodo", -1, HOBBIT);
+            System.out.println("D");
+        });
+        assertEquals("Age is not allowed to be smaller than zero", exception.getMessage());
     }
 
     @Test
-    @Disabled
     public void ensureServiceDoesNotRunToLong() {
-        //assertTimeout;
+        DataService dataService = new DataService();
+        assertTimeout(Duration.ofMillis(2500), dataService::update);
     }
 
     @Test
-    @Disabled
+    @EnabledOnOs(OS.WINDOWS)
+    @EnabledOnJre(JRE.JAVA_17)
     public void enableTestOnlyOnCertainPlatforms() {
         //
     }
