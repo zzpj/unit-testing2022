@@ -34,7 +34,6 @@ public class DataService {
     final Movie theReturnOfTheKing = new Movie("the Return of the King", Year.of(2003), Duration.ofMinutes(201));
 
     public List<TolkienCharacter> getFellowship() {
-
         final List<TolkienCharacter> fellowshipOfTheRing = new ArrayList<>();
         fellowshipOfTheRing.add(frodo);
         fellowshipOfTheRing.add(sam);
@@ -58,7 +57,7 @@ public class DataService {
 
     public TolkienCharacter getFellowshipCharacter(String name) {
         List<TolkienCharacter> list = getFellowship();
-        return list.stream().filter(s-> s.equals(name)).findFirst().get();
+        return list.stream().filter(s-> s.getName().equals(name)).findFirst().orElse(null);
     }
 
     public boolean update() {
