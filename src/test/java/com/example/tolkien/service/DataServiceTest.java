@@ -29,15 +29,16 @@ class DataServiceTest {
 
     @Test
     void ensureThatInitializationOfTolkeinCharactorsWorks() {
-//        TolkienCharacter frodo = new TolkienCharacter("Frodo", 33, HOBBIT);
-        TolkienCharacter frodo = dataService.frodo;
+        TolkienCharacter frodo = new TolkienCharacter("Frodo", 33, HOBBIT);
 
-        // TODO check that age is 33
-        assertEquals(33, frodo.getAge());
-        // TODO check that name is "Frodo"
-        assertEquals("Frodo", frodo.getName());
-        // TODO check that name is not "Frodon"
-        assertNotEquals("Frodon", frodo.getName());
+        // check that age is 33
+        // check that name is "Frodo"
+        // check that name is not "Frodon"
+        assertAll(
+                () -> assertEquals(frodo.getAge(),33),
+                () -> assertEquals(frodo.getName(),"Frodo"),
+                () -> assertNotEquals(frodo.getName(),"Frodon")
+        );
     }
 
     @Test
@@ -47,7 +48,7 @@ class DataServiceTest {
         Object jakeClone = new TolkienCharacter("Jake", 12, HOBBIT);
 
 
-        // TODO check that:
+        // check that:
         // jake is equal to sameJake
         assertEquals(sameJake, jake);
         // jake is not equal to jakeClone
@@ -57,13 +58,13 @@ class DataServiceTest {
     @Test
     void checkInheritance() {
         TolkienCharacter tolkienCharacter = dataService.getFellowship().get(0);
-        // TODO check that tolkienCharacter.getClass is not a movie class
+        // check that tolkienCharacter.getClass is not a movie class
         assertNotEquals(tolkienCharacter.getClass(),Movie.class);
     }
 
     @Test
     void ensureFellowShipCharacterAccessByNameReturnsNullForUnknownCharacter() {
-        // TODO imlement a check that dataService.getFellowshipCharacter returns null for an
+        // imlement a check that dataService.getFellowshipCharacter returns null for an
         // unknow felllow, e.g. "Lars"
         NoSuchElementException e = assertThrows(NoSuchElementException.class, () -> dataService.getFellowshipCharacter("Lars"));
         assertEquals("No value present", e.getMessage());
@@ -71,7 +72,7 @@ class DataServiceTest {
 
     @Test
     void ensureFellowShipCharacterAccessByNameWorksGivenCorrectNameIsGiven() {
-        // TODO imlement a check that dataService.getFellowshipCharacter returns a fellow for an
+        // imlement a check that dataService.getFellowshipCharacter returns a fellow for an
         // existing felllow, e.g. "Frodo"
         // ** Missing getName() in getFellowshipCharacter return
         TolkienCharacter frodo = dataService.frodo;
@@ -83,18 +84,16 @@ class DataServiceTest {
     void ensureThatFrodoAndGandalfArePartOfTheFellowsip() {
 
         List<TolkienCharacter> fellowship = dataService.getFellowship();
-
-        // TODO check that Frodo and Gandalf are part of the fellowship
+        // check that Frodo and Gandalf are part of the fellowship
         assertTrue(fellowship.contains(dataService.getFellowshipCharacter("Gandalf")));
         assertTrue(fellowship.contains(dataService.getFellowshipCharacter("Frodo")));
     }
 
-    // TODO Use @RepeatedTest(int) to execute this test 1000 times
+    // Use @RepeatedTest(int) to execute this test 1000 times
     @RepeatedTest(1000)
     @Tag("slow")
     @DisplayName("Minimal stress testing: run this test 1000 times to ")
     void ensureThatWeCanRetrieveFellowshipMultipleTimes() {
-        dataService = new DataService();
         assertNotNull(dataService.getFellowship());
     }
 
@@ -121,26 +120,16 @@ class DataServiceTest {
     @Test
     void ensureAge() {
         List<TolkienCharacter> fellowship = dataService.getFellowship();
+        fellowship
+                .stream()
+                .filter(e -> e.getRace().equals(HOBBIT) || e.getRace().equals(MAN) )
+                .forEach(e -> assertTrue(e.getAge() < 100));
 
-        // TODO test ensure that all hobbits and men are younger than 100 years
-        List<TolkienCharacter> hobbitsAndMen = fellowship.stream()
-                .filter(character -> character.getRace() == HOBBIT || character.getRace() == MAN).toList();
-        for (TolkienCharacter character : hobbitsAndMen
-        ) {
-            assertTrue(character.getRace() == HOBBIT || character.getRace() == MAN);
-            assertTrue(character.getAge() < 100);
-        }
+        fellowship
+                .stream()
+                .filter(e -> e.getRace().equals(ELF) || e.getRace().equals(DWARF) || e.getRace().equals(MAIA))
+                .forEach(e -> assertTrue(e.getAge() > 100));
 
-        // TODO also ensure that the elfs, dwars the maia are all older than 100 years
-        List<TolkienCharacter> elfsDwarfsAndMaia = fellowship.stream()
-                .filter(character -> character.getRace() == ELF || character.getRace() == DWARF || character.getRace() == MAIA).toList();
-        for (TolkienCharacter character : elfsDwarfsAndMaia
-        ) {
-            assertTrue(character.getRace() == ELF || character.getRace() == DWARF || character.getRace() == MAIA);
-            assertTrue(character.getAge() > 100);
-        }
-
-        // HINT fellowship.stream might be useful here
     }
 
     @Test
@@ -148,7 +137,7 @@ class DataServiceTest {
 
         List<TolkienCharacter> fellowship = dataService.getFellowship();
 
-        // TODO Write a test to get the 20 element from the fellowship throws an
+        // Write a test to get the 20 element from the fellowship throws an
         // IndexOutOfBoundsException
 
         IndexOutOfBoundsException e = assertThrows(IndexOutOfBoundsException.class, () -> fellowship.get(20));
@@ -157,7 +146,6 @@ class DataServiceTest {
 
     @Test
     void exceptionTesting() {
-        DataService dataService = new DataService();
         Throwable exception = assertThrows(IndexOutOfBoundsException.class, () -> dataService.getFellowship().get(20));
         assertEquals("Index 20 out of bounds for length 9", exception.getMessage());
     }
@@ -185,7 +173,6 @@ class DataServiceTest {
 
     @Test
     public void ensureServiceDoesNotRunToLong() {
-        //assertTimeout;
         assertTimeout(Duration.ofMillis(10), () -> dataService.getFellowship());
 
     }
