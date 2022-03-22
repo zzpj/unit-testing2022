@@ -19,19 +19,19 @@ class EmailValidatorTest {
     @Test
     @DisplayName("Ensure that the usage of a subdomain is still valid, see https://en.wikipedia.org/wiki/Subdomain")
     public void emailValidator_CorrectEmailSubDomain_ReturnsTrue() {
-        assertTrue(EmailValidator.isValidEmail("majser.nadachu@jesienny.wiatr.pl"));
+        assertTrue(EmailValidator.isValidEmail("majster.nadachu@jesienny.wiatr.pl"));
         
     }
 
     @Test
     @DisplayName("Ensure that a missing top level domain returns false")
     public void emailValidator_InvalidEmailNoTld_ReturnsFalse() {
-        assertFalse(EmailValidator.isValidEmail("majser.nadachu@jesienny"));
+        assertFalse(EmailValidator.isValidEmail("majster.nadachu@jesienny"));
     }
 
     @Test
     public void emailValidator_InvalidEmailDoubleDot_ReturnsFalse() {
-        assertFalse(EmailValidator.isValidEmail("majser.nadachu@jesienny.wiatr..pl"));
+        assertFalse(EmailValidator.isValidEmail("majster.nadachu@jesienny.wiatr..pl"));
     }
 
     @Test
