@@ -18,7 +18,7 @@ import static com.example.tolkien.model.Race.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DataServiceTest {
-    // TODO initialize before each test
+    // initialize before each test
     DataService dataService;
     static long startTime;
 
