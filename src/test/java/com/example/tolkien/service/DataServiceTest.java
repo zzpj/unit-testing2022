@@ -1,6 +1,7 @@
 package com.example.tolkien.service;
 
 import com.example.tolkien.model.Movie;
+import com.example.tolkien.model.Race;
 import com.example.tolkien.model.TolkienCharacter;
 import org.junit.Assert;
 import org.junit.jupiter.api.*;
@@ -10,6 +11,7 @@ import org.junit.jupiter.api.condition.JRE;
 import org.junit.jupiter.api.condition.OS;
 
 import java.time.Duration;
+import java.util.Arrays;
 import java.util.List;
 
 import static com.example.tolkien.model.Race.*;
@@ -93,17 +95,15 @@ class DataServiceTest {
     void ensureAge() {
         List<TolkienCharacter> fellowship = dataService.getFellowship();
 
-        fellowship.stream().filter(character -> character.getRace().equals(HOBBIT))
+        List<Race> racesUnderHundred = Arrays.asList(HOBBIT, MAN);
+        List<Race> otherRaces = Arrays.asList(ELF, DWARF, MAIA);
+
+        fellowship.stream().filter(character -> racesUnderHundred.contains(character.getRace()))
                 .forEach(character -> assertTrue(character.getAge() < 100));
 
-        fellowship.stream().filter(character -> character.getRace().equals(MAN))
-                .forEach(character -> assertTrue(character.getAge() < 100));
-
-        fellowship.stream().filter(character -> character.getRace().equals(ELF))
+        fellowship.stream().filter(character -> otherRaces.contains(character.getRace()))
                 .forEach(character -> assertTrue(character.getAge() > 100));
 
-        fellowship.stream().filter(character -> character.getRace().equals(DWARF))
-                .forEach(character -> assertTrue(character.getAge() > 100));
     }
 
     @Test
@@ -129,10 +129,9 @@ class DataServiceTest {
 
     @Test
     public void testThatAgeMustBeLargerThanZeroViaConstructor() {
-        Throwable exception = assertThrows(IllegalArgumentException.class, () -> {
-            TolkienCharacter frodo = new TolkienCharacter("Frodo", -1, HOBBIT);
-            System.out.println("D");
-        });
+        Throwable exception = assertThrows(IllegalArgumentException.class, () ->
+            new TolkienCharacter("Frodo", -1, HOBBIT)
+        );
         assertEquals("Age is not allowed to be smaller than zero", exception.getMessage());
     }
 
