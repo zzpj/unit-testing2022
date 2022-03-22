@@ -1,5 +1,13 @@
 # Unit Testing 2022
 
+## Zadanie wykonane przez
+
+* Michal Piotrowski 229983
+* Filip Grzechnik 229888
+* Radosław Zyzik 230049
+* Damian Wasilewski 230032
+* Jakub Czarnecki 229858
+
 ## Test Driven Development
 ![tdd](img_1.png)
 * Testing is cool 
