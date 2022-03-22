@@ -48,7 +48,7 @@ public class FizzBuzzTest {
     @Test
     @DisplayName("Checking to see if is divisible by five")
     void getFizzBuzzNumber_IsDivisibleByFive_Equals() {
-        for(Integer i : divByFive) {
+        for (Integer i : divByFive) {
             assertEquals("Buzz", fizzBuzz.getFizzBuzzNumber(i));
         }
     }
@@ -58,7 +58,7 @@ public class FizzBuzzTest {
     @DisabledIf("java.lang.System.getProperty('os.name').toLowerCase().contains('mac')")
     void getFizzBuzzNumber_IsDivisibleByFifteen_Equals() {
 
-        for(Integer i : divByFifteen) {
+        for (Integer i : divByFifteen) {
             assertEquals("FizzBuzz", fizzBuzz.getFizzBuzzNumber(i));
         }
     }
@@ -68,7 +68,7 @@ public class FizzBuzzTest {
     @DisabledIf("systemProperty.get('user.country') == 'RU'")
     void getFizzBuzzNumber_CheckString_Equals() {
         StringBuilder fizzBuzzString = new StringBuilder();
-        for(int i = 1; i <= 10; i++) {
+        for (int i = 1; i <= 10; i++) {
             fizzBuzzString.append(fizzBuzz.getFizzBuzzNumber(i));
         }
         assertEquals(fizzBuzzString.toString(), string);
