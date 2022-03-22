@@ -50,4 +50,28 @@ import static org.junit.jupiter.api.Assertions.*;
         public void buzzFailingTest(int a) {
             assertNotEquals("Buzz", fizzBuzz.getFizzBuzzNumber(a));
         }
+
+        @ParameterizedTest
+        @ValueSource(ints = {15, 30 , 45, 60})
+        @EnabledOnJre(JRE.JAVA_17)
+        @EnabledOnOs(value = {OS.LINUX, OS.WINDOWS}, disabledReason = "Works only on Linux or Windows")
+        public void fizzBbuzzSucceedingTest(int a) {
+            assertEquals("FizzBuzz", fizzBuzz.getFizzBuzzNumber(a));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {3, 6 , 9, 12})
+        @EnabledOnJre(JRE.JAVA_17)
+        @EnabledOnOs(value = {OS.LINUX, OS.WINDOWS}, disabledReason = "Works only on Linux or Windows")
+        public void fizzBuzzFailingTest(int a) {
+            assertNotEquals("Buzz", fizzBuzz.getFizzBuzzNumber(a));
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {7, 13 , 31, 43})
+        @EnabledOnJre(JRE.JAVA_17)
+        @EnabledOnOs(value = {OS.LINUX, OS.WINDOWS}, disabledReason = "Works only on Linux or Windows")
+        public void neitherFizzOrBuzz(int a) {
+            assertEquals(String.valueOf(a), fizzBuzz.getFizzBuzzNumber(a));
+        }
     }
