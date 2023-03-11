@@ -1,151 +1,186 @@
 package com.example.tolkien.service;
 
+import com.example.tolkien.model.Movie;
 import com.example.tolkien.model.TolkienCharacter;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
+import org.junit.jupiter.api.condition.EnabledOnOs;
+import org.junit.jupiter.api.condition.OS;
+import org.junit.jupiter.api.function.Executable;
 
+import java.time.Duration;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
-import static com.example.tolkien.model.Race.HOBBIT;
+import static com.example.tolkien.model.Race.*;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DataServiceTest {
-    // TODO initialize before each test
+    // initialize before each test
     DataService dataService;
+    static long startTime;
 
-    @Test
-    @Disabled
-    void ensureThatInitializationOfTolkeinCharactorsWorks() {
-        TolkienCharacter frodo = new TolkienCharacter("Frodo", 33, HOBBIT);
-
-        // TODO check that age is 33
-        // TODO check that name is "Frodo"
-        // TODO check that name is not "Frodon"
+    @BeforeEach
+    void init() {
+        dataService = new DataService();
     }
 
     @Test
-    @Disabled
+    void ensureThatInitializationOfTolkeinCharactorsWorks() {
+        TolkienCharacter frodo = new TolkienCharacter("Frodo", 33, HOBBIT);
+
+        // check that age is 33
+        // check that name is "Frodo"
+        // check that name is not "Frodon"
+        assertAll(
+                () -> assertEquals(frodo.getAge(),33),
+                () -> assertEquals(frodo.getName(),"Frodo"),
+                () -> assertNotEquals(frodo.getName(),"Frodon")
+        );
+    }
+
+    @Test
     void ensureThatEqualsWorksForCharaters() {
         Object jake = new TolkienCharacter("Jake", 43, HOBBIT);
         Object sameJake = jake;
         Object jakeClone = new TolkienCharacter("Jake", 12, HOBBIT);
-        // TODO check that:
+
+
+        // check that:
         // jake is equal to sameJake
+        assertEquals(sameJake, jake);
         // jake is not equal to jakeClone
+        assertNotEquals(jakeClone, jake);
     }
 
     @Test
-    @Disabled
     void checkInheritance() {
         TolkienCharacter tolkienCharacter = dataService.getFellowship().get(0);
-        // TODO check that tolkienCharacter.getClass is not a movie class
+        // check that tolkienCharacter.getClass is not a movie class
+        assertNotEquals(tolkienCharacter.getClass(),Movie.class);
     }
 
     @Test
-    @Disabled
     void ensureFellowShipCharacterAccessByNameReturnsNullForUnknownCharacter() {
-        // TODO imlement a check that dataService.getFellowshipCharacter returns null for an
+        // imlement a check that dataService.getFellowshipCharacter returns null for an
         // unknow felllow, e.g. "Lars"
+        NoSuchElementException e = assertThrows(NoSuchElementException.class, () -> dataService.getFellowshipCharacter("Lars"));
+        assertEquals("No value present", e.getMessage());
     }
 
     @Test
-    @Disabled
     void ensureFellowShipCharacterAccessByNameWorksGivenCorrectNameIsGiven() {
-        // TODO imlement a check that dataService.getFellowshipCharacter returns a fellow for an
+        // imlement a check that dataService.getFellowshipCharacter returns a fellow for an
         // existing felllow, e.g. "Frodo"
+        // ** Missing getName() in getFellowshipCharacter return
+        TolkienCharacter frodo = dataService.frodo;
+        TolkienCharacter frodo2 = dataService.getFellowshipCharacter("Frodo");
+        assertEquals(frodo, frodo2);
     }
 
-
     @Test
-    @Disabled
     void ensureThatFrodoAndGandalfArePartOfTheFellowsip() {
 
         List<TolkienCharacter> fellowship = dataService.getFellowship();
-
-        // TODO check that Frodo and Gandalf are part of the fellowship
+        // check that Frodo and Gandalf are part of the fellowship
+        assertTrue(fellowship.contains(dataService.getFellowshipCharacter("Gandalf")));
+        assertTrue(fellowship.contains(dataService.getFellowshipCharacter("Frodo")));
     }
 
-    // TODO Use @RepeatedTest(int) to execute this test 1000 times
-    @Test
-    @Disabled
+    // Use @RepeatedTest(int) to execute this test 1000 times
+    @RepeatedTest(1000)
     @Tag("slow")
     @DisplayName("Minimal stress testing: run this test 1000 times to ")
     void ensureThatWeCanRetrieveFellowshipMultipleTimes() {
-        dataService = new DataService();
         assertNotNull(dataService.getFellowship());
     }
 
     @Test
-    @Disabled
     void ensureOrdering() {
         List<TolkienCharacter> fellowship = dataService.getFellowship();
 
         // ensure that the order of the fellowship is:
         // frodo, sam, merry,pippin, gandalf,legolas,gimli,aragorn,boromir
+        List<TolkienCharacter> testFellowship = new ArrayList<>();
+        testFellowship.add(dataService.frodo);
+        testFellowship.add(dataService.sam);
+        testFellowship.add(dataService.merry);
+        testFellowship.add(dataService.pippin);
+        testFellowship.add(dataService.gandalf);
+        testFellowship.add(dataService.legolas);
+        testFellowship.add(dataService.gimli);
+        testFellowship.add(dataService.aragorn);
+        testFellowship.add(dataService.boromir);
+
+        assertEquals(fellowship, testFellowship);
     }
 
     @Test
-    @Disabled
     void ensureAge() {
         List<TolkienCharacter> fellowship = dataService.getFellowship();
+        fellowship
+                .stream()
+                .filter(e -> e.getRace().equals(HOBBIT) || e.getRace().equals(MAN) )
+                .forEach(e -> assertTrue(e.getAge() < 100));
 
-        // TODO test ensure that all hobbits and men are younger than 100 years
+        fellowship
+                .stream()
+                .filter(e -> e.getRace().equals(ELF) || e.getRace().equals(DWARF) || e.getRace().equals(MAIA))
+                .forEach(e -> assertTrue(e.getAge() > 100));
 
-        // TODO also ensure that the elfs, dwars the maia are all older than 100 years
-
-
-        // HINT fellowship.stream might be useful here
     }
 
     @Test
-    @Disabled
     void ensureThatFellowsStayASmallGroup() {
 
         List<TolkienCharacter> fellowship = dataService.getFellowship();
 
-        // TODO Write a test to get the 20 element from the fellowship throws an
+        // Write a test to get the 20 element from the fellowship throws an
         // IndexOutOfBoundsException
+
+        IndexOutOfBoundsException e = assertThrows(IndexOutOfBoundsException.class, () -> fellowship.get(20));
+        assertTrue(e.getMessage().contains("Index 20 out of bounds for length"));
     }
 
     @Test
-    @Disabled
     void exceptionTesting() {
-        DataService dataService = new DataService();
         Throwable exception = assertThrows(IndexOutOfBoundsException.class, () -> dataService.getFellowship().get(20));
         assertEquals("Index 20 out of bounds for length 9", exception.getMessage());
     }
 
     @Test
-    @Disabled
     public void ensureThatAgeMustBeLargerThanZeroViaSetter() {
         TolkienCharacter frodo = new TolkienCharacter("Frodo", 33, HOBBIT);
         // use assertThrows() rule to check that the message is:
         // Age is not allowed to be smaller than zero
-        frodo.setAge(-1);
-
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> frodo.setAge(-1));
+        assertEquals("Age is not allowed to be smaller than zero", e.getMessage());
     }
 
     @Test
-    @Disabled
     public void testThatAgeMustBeLargerThanZeroViaConstructor() {
         // use assertThrows() rule to check that an IllegalArgumentException exception is thrown and
         // that the message is:
         // "Age is not allowed to be smaller than zero"
 
-        TolkienCharacter frodo = new TolkienCharacter("Frodo", -1, HOBBIT);
+        //**Missing constructor throwing exception when age is negative
+        IllegalArgumentException e = assertThrows(IllegalArgumentException.class, () -> new TolkienCharacter("Frodo", -1, HOBBIT));
+        assertEquals("Age is not allowed to be smaller than zero", e.getMessage());
+
     }
 
     @Test
-    @Disabled
     public void ensureServiceDoesNotRunToLong() {
-        //assertTimeout;
+        assertTimeout(Duration.ofMillis(10), () -> dataService.getFellowship());
+
     }
 
     @Test
-    @Disabled
+    @EnabledOnOs(value = {OS.LINUX, OS.WINDOWS}, disabledReason = "Works only on Linux or Windows")
     public void enableTestOnlyOnCertainPlatforms() {
-        //
+        assertEquals(33, dataService.getFellowshipCharacter("Frodo").getAge());
+
     }
 }
